@@ -163,6 +163,9 @@ Mozilla.FxaIframe = (function() {
     };
 
     var _onLoaded = function(data) {
+        // remember iframe has loaded (new auth flow doesn't fire 'ping')
+        _handshake = true;
+
         _sendGAEvent('fxa-loaded');
         _userCallback('onLoaded', data);
     };
