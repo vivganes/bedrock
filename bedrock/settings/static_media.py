@@ -623,6 +623,13 @@ PIPELINE_CSS = {
         ),
         'output_filename': 'css/home.css',
     },
+    'home-variant': {
+        'source_filenames': (
+            'css/newsletter/moznewsletter-subscribe.less',
+            'css/mozorg/home/home-variant.scss',
+        ),
+        'output_filename': 'css/home-variant.css',
+    },
     'legal': {
         'source_filenames': (
             'css/legal/legal.less',
@@ -1396,6 +1403,14 @@ PIPELINE_JS = {
             'js/mozorg/home/home.js',
         ),
         'output_filename': 'js/home-bundle.js',
+    },
+    'experiment-home-links': {
+        'source_filenames': (
+            'js/base/mozilla-cookie-helper.js',
+            'js/base/mozilla-traffic-cop.js',
+            'js/mozorg/home/exp-home-links.js',
+        ),
+        'output_filename': 'js/exp-home-links-bundle.js',
     },
     'home-voices': {
         'source_filenames': (
