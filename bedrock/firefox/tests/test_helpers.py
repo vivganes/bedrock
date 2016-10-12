@@ -63,9 +63,16 @@ class TestDownloadButtons(TestCase):
         doc = pq(render("{{ download_firefox(force_direct=true) }}",
                         {'request': get_request}))
 
-        # Check that the first 4 links are direct.
+        # Check that the first 6 links are direct.
         links = doc('.download-list a')
-        for link in links[:4]:
+
+        # The first link should be sha-1 bouncer.
+        first_link = pq(links[0])
+        ok_(first_link.attr('href')
+            .startswith('https://download-sha1.allizom.org'))
+        ok_(first_link.attr('data-direct-link') is None)
+
+        for link in links[1:5]:
             link = pq(link)
             ok_(link.attr('href')
                 .startswith('https://download.mozilla.org'))
@@ -83,13 +90,20 @@ class TestDownloadButtons(TestCase):
         doc = pq(render("{{ download_firefox() }}",
                         {'request': get_request}))
 
-        # The first 5 links should be for desktop.
+        # The first 6 links should be for desktop.
         links = doc('.download-list a')
-        for link in links[:5]:
+
+        # The first link should be sha-1 bouncer.
+        first_link = pq(links[0])
+        ok_(first_link.attr('data-direct-link')
+            .startswith('https://download-sha1.allizom.org'))
+
+        for link in links[1:5]:
             ok_(pq(link).attr('data-direct-link')
                 .startswith('https://download.mozilla.org'))
-        # The fifth link is mobile and should not have the attr
-        ok_(pq(links[5]).attr('data-direct-link') is None)
+
+        # The seventh link is mobile and should not have the attr
+        ok_(pq(links[6]).attr('data-direct-link') is None)
 
     @override_settings(AURORA_STUB_INSTALLER=True)
     def test_stub_aurora_installer_enabled_locales(self):
@@ -138,12 +152,13 @@ class TestDownloadButtons(TestCase):
                         {'request': get_request}))
 
         list = doc('.download-list li')
-        eq_(list.length, 5)
-        eq_(pq(list[0]).attr('class'), 'os_win')
-        eq_(pq(list[1]).attr('class'), 'os_win64')
-        eq_(pq(list[2]).attr('class'), 'os_osx')
-        eq_(pq(list[3]).attr('class'), 'os_linux')
-        eq_(pq(list[4]).attr('class'), 'os_linux64')
+        eq_(list.length, 6)
+        eq_(pq(list[0]).attr('class'), 'os_winsha1')
+        eq_(pq(list[1]).attr('class'), 'os_win')
+        eq_(pq(list[2]).attr('class'), 'os_win64')
+        eq_(pq(list[3]).attr('class'), 'os_osx')
+        eq_(pq(list[4]).attr('class'), 'os_linux')
+        eq_(pq(list[5]).attr('class'), 'os_linux64')
 
     def test_beta_desktop(self):
         """The Beta channel should not have Windows 64 build yet"""
@@ -154,12 +169,13 @@ class TestDownloadButtons(TestCase):
                         {'request': get_request}))
 
         list = doc('.download-list li')
-        eq_(list.length, 5)
-        eq_(pq(list[0]).attr('class'), 'os_win')
-        eq_(pq(list[1]).attr('class'), 'os_win64')
-        eq_(pq(list[2]).attr('class'), 'os_osx')
-        eq_(pq(list[3]).attr('class'), 'os_linux')
-        eq_(pq(list[4]).attr('class'), 'os_linux64')
+        eq_(list.length, 6)
+        eq_(pq(list[0]).attr('class'), 'os_winsha1')
+        eq_(pq(list[1]).attr('class'), 'os_win')
+        eq_(pq(list[2]).attr('class'), 'os_win64')
+        eq_(pq(list[3]).attr('class'), 'os_osx')
+        eq_(pq(list[4]).attr('class'), 'os_linux')
+        eq_(pq(list[5]).attr('class'), 'os_linux64')
 
     def test_firefox_desktop(self):
         """The Release channel should not have Windows 64 build yet"""
@@ -170,12 +186,13 @@ class TestDownloadButtons(TestCase):
                         {'request': get_request}))
 
         list = doc('.download-list li')
-        eq_(list.length, 5)
-        eq_(pq(list[0]).attr('class'), 'os_win')
-        eq_(pq(list[1]).attr('class'), 'os_win64')
-        eq_(pq(list[2]).attr('class'), 'os_osx')
-        eq_(pq(list[3]).attr('class'), 'os_linux')
-        eq_(pq(list[4]).attr('class'), 'os_linux64')
+        eq_(list.length, 6)
+        eq_(pq(list[0]).attr('class'), 'os_winsha1')
+        eq_(pq(list[1]).attr('class'), 'os_win')
+        eq_(pq(list[2]).attr('class'), 'os_win64')
+        eq_(pq(list[3]).attr('class'), 'os_osx')
+        eq_(pq(list[4]).attr('class'), 'os_linux')
+        eq_(pq(list[5]).attr('class'), 'os_linux64')
 
     @patch.object(firefox_android._storage, 'data',
                   Mock(return_value=dict(alpha_version='48.0a2')))
