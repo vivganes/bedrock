@@ -55,16 +55,16 @@
         {{ _('Be among the first to explore future releases of Firefox for desktop, Android and iOS.') }}
       </h2>
     </div>
-    <nav class="platform-nav" role="navigation">
-      <div class="container">
-        <ul>
-          <li class="nav-desktop"><a href="{{ url('firefox.channel.desktop') }}" data-link-type="nav" data-link-name="Desktop">{{ _('Desktop') }}</a></li>
-          <li class="nav-android"><a href="{{ url('firefox.channel.android') }}" data-link-type="nav" data-link-name="Android">{{ _('Android') }}</a></li>
-          <li class="nav-ios"><a href="{{ url('firefox.channel.ios') }}" data-link-type="nav" data-link-name="iOS">{{ _('iOS') }}</a></li>
-        </ul>
-      </div>
-    </nav>
   </header>
+  <nav class="platform-nav" role="navigation">
+    <div class="container">
+      <ul>
+        <li class="nav-desktop"><a href="{{ url('firefox.channel.desktop') }}" data-link-type="nav" data-link-name="Desktop">{{ _('Desktop') }}</a></li>
+        <li class="nav-android"><a href="{{ url('firefox.channel.android') }}" data-link-type="nav" data-link-name="Android">{{ _('Android') }}</a></li>
+        <li class="nav-ios"><a href="{{ url('firefox.channel.ios') }}" data-link-type="nav" data-link-name="iOS">{{ _('iOS') }}</a></li>
+      </ul>
+    </div>
+  </nav>
   {% block channels %}{% endblock %}
   <div id="help-out">
     <div class="container">

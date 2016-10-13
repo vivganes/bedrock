@@ -184,6 +184,8 @@
 // Platform navigation
 
 .platform-nav {
+    .sticky;
+    text-align: center;
     background: #1f366c;
 
     ul {
@@ -290,7 +292,9 @@ html[lang^="en"] {
 // Channel components
 
 .channel {
-    padding-top: @baseLine * 2;
+    padding-top: 80px;  /* It should be higher than the sticky .platform-nav so
+                           that the section's content is visible when an in-page
+                           anchor is used, e.g. #nightly */
     text-align: center;
 
     header {
