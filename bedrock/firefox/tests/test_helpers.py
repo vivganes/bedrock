@@ -52,6 +52,7 @@ class TestDownloadButtons(TestCase):
         eq_(pq(links[5]).attr('href'), settings.APPLE_APPSTORE_FIREFOX_LINK
                                             .replace('/{country}/', '/'))
 
+    @patch('bedrock.firefox.firefox_details.switch', Mock(return_value=False))
     def test_button_force_direct(self):
         """
         If the force_direct parameter is True, all download links must be
@@ -79,6 +80,7 @@ class TestDownloadButtons(TestCase):
             # direct links should not have the data attr.
             ok_(link.attr('data-direct-link') is None)
 
+    @patch('bedrock.firefox.firefox_details.switch', Mock(return_value=False))
     def test_button_has_data_attr_if_not_direct(self):
         """
         If the button points to the thank you page, it should have a

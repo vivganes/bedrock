@@ -4,6 +4,7 @@ from operator import itemgetter
 from urllib import urlencode
 
 from django.conf import settings
+from bedrock.base.waffle import switch
 from product_details import ProductDetails
 from lib.l10n_utils.dotlang import _lazy as _
 
@@ -68,6 +69,9 @@ class FirefoxDesktop(_ProductDetails):
 
     def __init__(self, **kwargs):
         super(FirefoxDesktop, self).__init__(**kwargs)
+
+    def get_bouncer_url(self, platform):
+        return self.sha1_bouncer_url if not switch('disable-sha1-downloads') and platform == 'winsha1' else self.bouncer_url
 
     def platforms(self, channel='release'):
         platforms = self.platform_labels.copy()
@@ -215,7 +219,6 @@ class FirefoxDesktop(_ProductDetails):
         _version = version
         _locale = 'ja-JP-mac' if platform == 'osx' and locale == 'ja' else locale
         _platform = 'win' if platform == 'winsha1' else platform
-        _bouncer_url = self.sha1_bouncer_url if platform == 'winsha1' else self.bouncer_url
 
         # Aurora has a special download link format
         if channel == 'alpha':
@@ -229,7 +232,7 @@ class FirefoxDesktop(_ProductDetails):
             else:
                 product = 'firefox-aurora-latest-l10n'
 
-            return '?'.join([_bouncer_url,
+            return '?'.join([self.get_bouncer_url(platform),
                              urlencode([
                                  ('product', product),
                                  ('os', _platform),
@@ -270,7 +273,7 @@ class FirefoxDesktop(_ProductDetails):
         # (bypassing the transition page)
         if force_direct:
             # build a direct download link
-            return '?'.join([_bouncer_url,
+            return '?'.join([self.get_bouncer_url(platform),
                              urlencode([
                                  ('product', 'firefox-%s' % _version),
                                  ('os', _platform),
